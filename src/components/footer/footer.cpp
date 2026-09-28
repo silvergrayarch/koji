@@ -6,39 +6,39 @@
 
 Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
 {
-    append(status_row);
+    append(status_row_);
 
-    status_row.append(status_label);
+    status_row_.append(status_label_);
 
     Gtk::Box *spacer = Gtk::make_managed<Gtk::Box>();
     spacer->set_hexpand(true);
-    status_row.append(*spacer);
+    status_row_.append(*spacer);
 
-    status_row.append(time_label);
-    status_row.append(volume_label);
-    status_row.append(shuffle_label);
-    status_row.append(repeat_label);
+    status_row_.append(time_label_);
+    status_row_.append(volume_label_);
+    status_row_.append(shuffle_label_);
+    status_row_.append(repeat_label_);
 
-    append(divider);
+    append(divider_);
 
-    hint_label.set_halign(Gtk::Align::START);
-    hint_label.set_text("s: shuffle   r: repeat   space: play/pause   x: stop   q: quit");
-    append(hint_label);
+    hint_label_.set_halign(Gtk::Align::START);
+    hint_label_.set_text("s: shuffle   r: repeat   space: play/pause   x: stop   q: quit");
+    append(hint_label_);
 }
 
 void Footer::update(const Player &player)
 {
     std::string status_icon = player.current_song == -1 ? "⏹" : player.paused ? "⏸" : "⯈";
     std::string status_text = player.current_song == -1 ? "nothing playing" : player.queue.queue[player.current_song].title;
-    status_label.set_text(status_icon + " " + status_text);
+    status_label_.set_text(status_icon + " " + status_text);
 
     std::string position_time = player.current_song != -1 ? formatTime(player.position) : "--:--";
     std::string duration_time = player.current_song != -1 ? formatTime(player.queue.queue[player.current_song].duration) : "--:--";
-    time_label.set_text(position_time + "/" + duration_time);
+    time_label_.set_text(position_time + "/" + duration_time);
 
-    volume_label.set_text("Vol:" + std::to_string(player.volume) + "%");
+    volume_label_.set_text("Vol:" + std::to_string(player.volume) + "%");
 
-    shuffle_label.set_text(player.shuffle ? "Shuf:On" : "Shuf:Off");
+    shuffle_label_.set_text(player.shuffle ? "Shuf:On" : "Shuf:Off");
 
-    repeat_label.set_text(player.repeat_mode == RepeatMode::Off ? "Rep:Off" : player.repeat_mode == RepeatMode::All ? "Rep:All" : "Rep:Trk");
+    repeat_label_.set_text(player.repeat_mode == RepeatMode::Off ? "Rep:Off" : player.repeat_mode == RepeatMode::All ? "Rep:All" : "Rep:Trk");
 }

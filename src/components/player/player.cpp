@@ -182,6 +182,7 @@ void Player::updateCurrentSong()
 
     const char *play_command[] = {"loadfile", queue.queue[current_song].path.c_str(), "replace", nullptr};
     mpv_command(mpv_context, play_command);
+    mpv_set_property_string(mpv_context, "pause", "no");
 }
 
 void Player::addSongsToQueue(std::vector<SongEntry> &songs)
