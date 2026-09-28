@@ -184,6 +184,7 @@ void Player::updateCurrentSong()
     mpv_command(mpv_context, play_command);
     mpv_set_property_string(mpv_context, "pause", "no");
     queue.update();
+    queue.highlight(current_song);
 }
 
 void Player::addSongsToQueue(std::vector<SongEntry> &songs)

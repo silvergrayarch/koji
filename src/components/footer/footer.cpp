@@ -22,7 +22,7 @@ Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
     append(divider_);
 
     hint_label_.set_halign(Gtk::Align::START);
-    hint_label_.set_text("s: shuffle   r: repeat   space: play/pause   x: stop   q: quit");
+    hint_label_.set_text("s: shuffle   r: repeat   space: play/pause   x: stop   esc: quit");
     append(hint_label_);
 }
 
