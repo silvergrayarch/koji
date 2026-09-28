@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 #include <gtkmm.h>
-#include "components/player/player.h"
 #include "components/footer/footer.h"
+#include "components/player/player.h"
 
 class Window : public Gtk::Window
 {
@@ -16,11 +16,10 @@ class Window : public Gtk::Window
 
     bool update();
 
-    Player player;
-    Footer footer;
+    Player        player;
+    Footer        footer;
     Gtk::Notebook tabbar;
-    Gtk::Box main_window{Gtk::Orientation::VERTICAL};
-
+    Gtk::Box      main_window{Gtk::Orientation::VERTICAL};
 
   private:
     bool onWindowKeyPressed(guint keyval, guint keycode, Gdk::ModifierType state);
@@ -42,7 +41,7 @@ Window::Window()
     tabbar.set_vexpand(true);
     main_window.append(tabbar);
     main_window.append(footer);
-    
+
     if (!player.init())
         return;
 

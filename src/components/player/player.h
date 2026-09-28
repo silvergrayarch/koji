@@ -8,10 +8,10 @@
 #include <mpv/client.h>
 #include "../../library/entries.h"
 #include "../../library/library.h"
-#include "../utils/utils.h"
-#include "../queue/queue.h"
 #include "../albums/albums.h"
 #include "../playlists/playlists.h"
+#include "../queue/queue.h"
+#include "../utils/utils.h"
 
 enum class RepeatMode
 {

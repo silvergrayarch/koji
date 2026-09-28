@@ -19,9 +19,9 @@ Playlists::Playlists()
     tree_refrence                                   = setupStringTreeView(tree, collumns, queue_column_headers);
 
     update();
-    
+
     auto click_gesture = Gtk::GestureClick::create();
-    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Playlists::on_clicked));
+    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Playlists::onClicked));
     tree.add_controller(click_gesture);
 }
 
@@ -36,7 +36,7 @@ void Playlists::update()
     }
 }
 
-void Playlists::on_clicked(int n_press, double x, double y)
+void Playlists::onClicked(int n_press, double x, double y)
 {
     double offset_y = y - tree.get_column(0)->get_button()->get_allocation().get_height();
 
@@ -53,6 +53,6 @@ void Playlists::on_clicked(int n_press, double x, double y)
     PlaylistEntry &selected_playlist = playlists[selected_index];
 
     std::vector<SongEntry> playlist_songs = koji::library::getPlaylistSongs(selected_playlist);
-    player->clearQueue();
-    player->addSongsToQueue(playlist_songs);
+    player_->clearQueue();
+    player_->addSongsToQueue(playlist_songs);
 }

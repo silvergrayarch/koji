@@ -7,19 +7,19 @@
 
 class Footer : public Gtk::Box
 {
-public:
+  public:
     Footer();
 
     void update(const Player &player);
 
-private:
-    Gtk::Box       status_row{Gtk::Orientation::HORIZONTAL, 8};
-    Gtk::Separator divider;
+  private:
+    Gtk::Box       status_row_{Gtk::Orientation::HORIZONTAL, 8};
+    Gtk::Separator divider_;
 
-    Gtk::Label status_label;
-    Gtk::Label time_label;
-    Gtk::Label volume_label;
-    Gtk::Label shuffle_label;
-    Gtk::Label repeat_label;
-    Gtk::Label hint_label;
+    Gtk::Label status_label_;
+    Gtk::Label time_label_;
+    Gtk::Label volume_label_;
+    Gtk::Label shuffle_label_;
+    Gtk::Label repeat_label_;
+    Gtk::Label hint_label_;
 };

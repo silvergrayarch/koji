@@ -20,7 +20,7 @@ Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
     status_row.append(repeat_label);
 
     append(divider);
-    
+
     hint_label.set_halign(Gtk::Align::START);
     hint_label.set_text("s: shuffle   r: repeat   space: play/pause   x: stop   q: quit");
     append(hint_label);
@@ -29,11 +29,11 @@ Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
 void Footer::update(const Player &player)
 {
     std::string status_icon = player.current_song == -1 ? "⏹" : player.paused ? "⏸" : "⯈";
-    std::string status_text =  player.current_song == -1 ? "nothing playing" : player.queue.queue[player.current_song].title;
+    std::string status_text = player.current_song == -1 ? "nothing playing" : player.queue.queue[player.current_song].title;
     status_label.set_text(status_icon + " " + status_text);
 
-    std::string position_time     = player.current_song != -1 ? formatTime(player.position) : "--:--";
-    std::string duration_time     = player.current_song != -1 ? formatTime(player.queue.queue[player.current_song].duration) : "--:--";
+    std::string position_time = player.current_song != -1 ? formatTime(player.position) : "--:--";
+    std::string duration_time = player.current_song != -1 ? formatTime(player.queue.queue[player.current_song].duration) : "--:--";
     time_label.set_text(position_time + "/" + duration_time);
 
     volume_label.set_text("Vol:" + std::to_string(player.volume) + "%");

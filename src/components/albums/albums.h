@@ -6,8 +6,8 @@
 #include <gtkmm.h>
 #include "../../library/entries.h"
 #include "../../library/library.h"
-#include "../utils/utils.h"
 #include "../queue/queue.h"
+#include "../utils/utils.h"
 
 class Player;
 
@@ -16,7 +16,7 @@ class Albums
   public:
     Albums();
     void update();
-    void setPlayer(Player *player_ptr) { player = player_ptr; }
+    void setPlayer(Player *player_ptr) { player_ = player_ptr; }
 
     std::vector<AlbumEntry>      albums = koji::library::getAlbums();
     TreeColumnSet                collumns;
@@ -24,7 +24,8 @@ class Albums
     Gtk::ScrolledWindow          window;
     Gtk::TreeView                tree;
     Glib::RefPtr<Gtk::ListStore> tree_refrence;
+
   private:
-    Player *player;
-    void on_clicked(int n_press, double x, double y);
+    Player *player_;
+    void    onClicked(int n_press, double x, double y);
 };

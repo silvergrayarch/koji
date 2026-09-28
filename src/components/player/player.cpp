@@ -21,7 +21,6 @@ Player::Player()
     playlists.setPlayer(this);
 }
 
-
 bool Player::init()
 {
     setlocale(LC_NUMERIC, "C");
@@ -48,7 +47,7 @@ bool Player::init()
 
     // queue.queue = koji::library::getAlbumSongs(albums.albums[0]);
     // queue.update();
-    
+
     return true;
 }
 
@@ -70,7 +69,7 @@ void Player::update()
 
     if (end_file->reason != MPV_END_FILE_REASON_EOF)
         return;
-    
+
     if (current_song < 0 || current_song >= static_cast<int>(queue.queue.size()))
     {
         stopPlayback();
@@ -130,7 +129,7 @@ void Player::toggleShuffle()
 {
     shuffle = !shuffle;
 
-    bool has_current_song = current_song >= 0 && current_song < static_cast<int>(queue.queue.size());
+    bool      has_current_song = current_song >= 0 && current_song < static_cast<int>(queue.queue.size());
     SongEntry currently_playing;
 
     if (has_current_song)
@@ -172,19 +171,18 @@ void Player::stopPlayback()
 
 void Player::clearQueue()
 {
-   queue.queue.clear();
-   queue.unshuffled_queue.clear();
+    queue.queue.clear();
+    queue.unshuffled_queue.clear();
 }
 
 void Player::updateCurrentSong()
 {
     if (current_song < 0 || current_song >= static_cast<int>(queue.queue.size()))
         return;
-    
+
     const char *play_command[] = {"loadfile", queue.queue[current_song].path.c_str(), "replace", nullptr};
     mpv_command(mpv_context, play_command);
 }
-
 
 void Player::addSongsToQueue(std::vector<SongEntry> &songs)
 {
@@ -195,7 +193,7 @@ void Player::addSongsToQueue(std::vector<SongEntry> &songs)
         ranges::shuffle(songs, random_engine);
     }
     bool empty_queue = queue.queue.empty();
-    
+
     queue.queue.insert(queue.queue.end(), songs.begin(), songs.end());
     queue.update();
 
@@ -203,6 +201,5 @@ void Player::addSongsToQueue(std::vector<SongEntry> &songs)
     {
         current_song = 0;
         updateCurrentSong();
-    }   
+    }
 }
-

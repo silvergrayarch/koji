@@ -21,7 +21,7 @@ Queue::Queue()
 
     // for (int i = 0; i < static_cast<int>(songs.size()); ++i)
     auto click_gesture = Gtk::GestureClick::create();
-    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Queue::on_clicked));
+    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Queue::onClicked));
     tree.add_controller(click_gesture);
 }
 
@@ -50,7 +50,7 @@ void Queue::highlight(int index)
     tree.scroll_to_row(path);
 }
 
-void Queue::on_clicked(int n_press, double x, double y)
+void Queue::onClicked(int n_press, double x, double y)
 {
     double offset_y = y - tree.get_column(0)->get_button()->get_allocation().get_height();
 
@@ -64,6 +64,6 @@ void Queue::on_clicked(int n_press, double x, double y)
     if (selected_index < 0 || selected_index >= static_cast<int>(queue.size()))
         return;
 
-    player->current_song = selected_index;
-    player->updateCurrentSong();
+    player_->current_song = selected_index;
+    player_->updateCurrentSong();
 }
