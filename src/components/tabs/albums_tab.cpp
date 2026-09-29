@@ -1,35 +1,32 @@
 // SPDX-License-Identifier: GPL-3.0
 // SPDX-FileCopyrightText: 2026 silver_gray
 
-#include "albums.h"
-#include "../player/player.h"
+#include "albums_tab.h"
 
-Albums::Albums()
+AlbumsTab::AlbumsTab()
 {
     window.set_child(tree);
     tree.set_enable_search(false);
+    tree.set_rubber_banding(false);
 
-    // Only show the scrollbars when they are necessary:
     window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
     window.set_expand();
 
     box.append(window);
 
-    std::vector<Glib::ustring> queue_column_headers = {"Artist", "Album"};
-    tree_refrence                                   = setupStringTreeView(tree, collumns, queue_column_headers);
-
-    update();
+    std::vector<Glib::ustring> album_column_headers = {"Artist", "Album"};
+    tree_refrence                                   = setupStringTreeView(tree, collumns, album_column_headers);
 
     auto click_gesture = Gtk::GestureClick::create();
-    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Albums::onClicked));
+    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &AlbumsTab::onClicked));
     tree.add_controller(click_gesture);
 }
 
-void Albums::update()
+void AlbumsTab::update()
 {
     if (!(tree_refrence->children().size() == 0))
         tree_refrence->clear();
-    for (AlbumEntry &album : albums)
+    for (AlbumEntry &album : player_->albums)
     {
         auto row                        = *(tree_refrence->append());
         row[collumns.string_columns[0]] = album.artist;
@@ -37,7 +34,7 @@ void Albums::update()
     }
 }
 
-void Albums::onClicked(int n_press, double x, double y)
+void AlbumsTab::onClicked(int n_press, double x, double y)
 {
     double offset_y = y - tree.get_column(0)->get_button()->get_allocation().get_height();
 
@@ -48,11 +45,10 @@ void Albums::onClicked(int n_press, double x, double y)
 
     int selected_index = path[0];
 
-    if (selected_index < 0 || selected_index >= static_cast<int>(albums.size()))
+    if (selected_index < 0 || selected_index >= player_->queue.size())
         return;
 
-    AlbumEntry            &selected_album = albums[selected_index];
-    std::vector<SongEntry> album_songs    = getAlbumSongs(selected_album);
+    AlbumEntry            &selected_album = player_->albums[selected_index];
     player_->clearQueue();
-    player_->addSongsToQueue(album_songs);
+    player_->addSongsToQueue(selected_album.songs);
 }

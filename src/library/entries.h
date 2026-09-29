@@ -4,28 +4,42 @@
 
 #include <filesystem>
 #include <string>
+#include <vector>
 
-struct AlbumEntry
-{
-    std::filesystem::path path;
-    std::string           title;
-    std::string           artist;
-    bool                  operator==(const AlbumEntry &) const = default;
-};
-
-struct PlaylistEntry
-{
-    std::filesystem::path path;
-    std::string           title;
-    bool                  operator==(const PlaylistEntry &) const = default;
-};
-
+// filesystem::path path;
+// string artist;
+// string album;
+// string title;
 struct SongEntry
 {
-    std::filesystem::path path;
-    std::string           artist;
-    std::string           album;
-    std::string           title;
-    float                 duration;
-    bool                  operator==(const SongEntry &) const = default;
+  std::filesystem::path path;
+  std::string artist;
+  std::string album;
+  std::string title;
+  float duration;
+  bool operator==(const SongEntry &) const = default;
+};
+
+// filesystem::path path;
+// string title;
+// string artist;
+// vector<SongEntry> songs;
+struct AlbumEntry
+{
+  std::filesystem::path path;
+  std::string title;
+  std::string artist;
+  std::vector<SongEntry> songs;
+  bool operator==(const AlbumEntry &) const = default;
+};
+
+// filesystem::path path;
+// string title;
+// vector<SongEntry> songs;
+struct PlaylistEntry
+{
+  std::filesystem::path path;
+  std::string title;
+  std::vector<SongEntry> songs;
+  bool operator==(const PlaylistEntry &) const = default;
 };

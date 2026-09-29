@@ -2,14 +2,12 @@
 // SPDX-FileCopyrightText: 2026 silver_gray
 #pragma once
 
+#include "entries.h"
 #include <string>
 #include <vector>
-#include "entries.h"
 
-std::vector<AlbumEntry>    getAlbums();
-std::vector<SongEntry>     getAlbumSongs(const AlbumEntry &album);
-std::vector<PlaylistEntry> getPlaylists();
-std::vector<SongEntry>     getPlaylistSongs(const PlaylistEntry &playlist);
-bool                       renamePlaylist(const PlaylistEntry &entry, const std::string &name);
-void                       savePlaylist(const PlaylistEntry &entry, const std::vector<SongEntry> &playlist);
-bool                       duplicatePlaylist(const PlaylistEntry &entry);
+std::vector<AlbumEntry> get_albums();
+std::vector<PlaylistEntry> get_playlists();
+bool rename_playlist(const PlaylistEntry &playlist, const std::string &name);
+void save_playlist(const PlaylistEntry &playlist);
+bool duplicate_playlist(const PlaylistEntry &playlist);

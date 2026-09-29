@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 // SPDX-FileCopyrightText: 2026 silver_gray
 
-#include "queue.h"
-#include "../player/player.h"
+#include "queue_tab.h"
 
-Queue::Queue()
+QueueTab::QueueTab()
 {
     window.set_child(tree);
     tree.set_enable_search(false);
     tree.set_rubber_banding(false);
 
-    // Only show the scrollbars when they are necessary:
     window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
     window.set_expand();
 
@@ -19,17 +17,16 @@ Queue::Queue()
     std::vector<Glib::ustring> queue_column_headers = {"Title", "Album", "Artist", "Duration"};
     tree_refrence                                   = setupStringTreeView(tree, collumns, queue_column_headers);
 
-    // for (int i = 0; i < static_cast<int>(songs.size()); ++i)
     auto click_gesture = Gtk::GestureClick::create();
-    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &Queue::onClicked));
+    click_gesture->signal_pressed().connect(sigc::mem_fun(*this, &QueueTab::onClicked));
     tree.add_controller(click_gesture);
 }
 
-void Queue::update()
+void QueueTab::update()
 {
     if (!(tree_refrence->children().size() == 0))
         tree_refrence->clear();
-    for (SongEntry &song : queue)
+    for (SongEntry &song : player_->queue)
     {
         auto row                        = *(tree_refrence->append());
         row[collumns.string_columns[0]] = song.title;
@@ -37,20 +34,17 @@ void Queue::update()
         row[collumns.string_columns[2]] = song.artist;
         row[collumns.string_columns[3]] = formatTime(song.duration);
     }
-}
-void Queue::highlight(int index)
-{
-    if (index < 0 || index >= static_cast<int>(tree_refrence->children().size()))
+
+    if (player_->current_song < 0 || player_->current_song >= static_cast<int>(tree_refrence->children().size()))
         return;
 
     Gtk::TreeModel::Path path;
-    path.push_back(index);
+    path.push_back(player_->current_song);
 
     tree.get_selection()->select(path);
     tree.scroll_to_row(path);
 }
-
-void Queue::onClicked(int n_press, double x, double y)
+void QueueTab::onClicked(int n_press, double x, double y)
 {
     double offset_y = y - tree.get_column(0)->get_button()->get_allocation().get_height();
 
@@ -61,7 +55,7 @@ void Queue::onClicked(int n_press, double x, double y)
 
     int selected_index = path[0];
 
-    if (selected_index < 0 || selected_index >= static_cast<int>(queue.size()))
+    if (selected_index < 0 || selected_index >= player_->queue.size())
         return;
 
     player_->current_song = selected_index;

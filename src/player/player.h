@@ -6,12 +6,9 @@
 #include <vector>
 #include <gtkmm.h>
 #include <mpv/client.h>
-#include "../../library/entries.h"
-#include "../../library/library.h"
-#include "../albums/albums.h"
-#include "../playlists/playlists.h"
-#include "../queue/queue.h"
-#include "../utils/utils.h"
+
+#include "../library/entries.h"
+#include "../library/library.h"
 
 enum class RepeatMode
 {
@@ -23,7 +20,6 @@ enum class RepeatMode
 class Player
 {
   public:
-    Player();
     bool init();
     void update();
     void cleanup();
@@ -43,11 +39,13 @@ class Player
     bool  shuffle  = false;
     float position = 0.0f; // in seconds
 
-    Queue     queue;
-    Albums    albums;
-    Playlists playlists;
-
     RepeatMode repeat_mode = RepeatMode::All;
+
+    std::vector<AlbumEntry> albums = get_albums();
+    std::vector<PlaylistEntry> playlists = get_playlists();
+
+    std::vector<SongEntry> queue;
+    std::vector<SongEntry> unshuffled_queue;
 
     int          current_song = -1;
     std::mt19937 random_engine{std::random_device{}()};

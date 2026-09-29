@@ -9,20 +9,14 @@ It uses mpv for audio playback and SDL3 for window management.
 - **Album Selection Tab**: Lists available albums and allows users to add all songs from an album to the queue.
 - **Playlist Selection Tab**: Lists available playlists and allows users to add all songs from a playlist to the queue.
 
-## Quick Start
-
-### For Linux
+## Quick Start (For Linux)
 
 - **Dependencies:** [gtkmm](https://gtkmm.gnome.org/en/download.html), [mpv](https://mpv.io/), [taglib](https://taglib.org/) (Install these dependencies using your system's package manager before building)
 - **Installation:** ```git clone https://github.com/silvergrayarch/koji.git && make all```
 - **Importing Files:** Follow the formatting in [File Formatting](#file-formatting)
 - **Running:** ```./koji```
 
-### For Others
-
--  Create a feature request sorry but i ain't freely supporting other systems than linux unless people want it.
-
-## Keybinding
+## Keybindings
 - `S`: Toggle shuffle
 - `R`: Toggle repeat mode
 - `X`: Stop music
@@ -31,6 +25,7 @@ It uses mpv for audio playback and SDL3 for window management.
 - `-`: Decrease volume by 5%
 - `Tab`: Cycle tabs
 - `Right-Click`: Opens context popup when over an entry
+- `Esc`: Closes the window
 
 ## Features
 

@@ -4,21 +4,16 @@
 
 #include <vector>
 #include <gtkmm.h>
-#include "../../library/entries.h"
-#include "../../library/library.h"
-#include "../queue/queue.h"
-#include "../utils/utils.h"
+#include "../utils.h"
+#include "../../player/player.h"
 
-class Player;
-
-class Playlists
+class AlbumsTab
 {
   public:
-    Playlists();
+    AlbumsTab();
     void update();
     void setPlayer(Player *player_ptr) { player_ = player_ptr; }
-
-    std::vector<PlaylistEntry>   playlists = getPlaylists();
+    
     TreeColumnSet                collumns;
     Gtk::Box                     box;
     Gtk::ScrolledWindow          window;
@@ -26,6 +21,6 @@ class Playlists
     Glib::RefPtr<Gtk::ListStore> tree_refrence;
 
   private:
-    Player *player_;
     void    onClicked(int n_press, double x, double y);
+    Player *player_;
 };

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 // SPDX-FileCopyrightText: 2026 silver_gray
 #include "footer.h"
-#include "../../library/entries.h"
-#include "../utils/utils.h"
+#include "../library/entries.h"
+#include "utils.h"
 
 Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
 {
@@ -29,11 +29,11 @@ Footer::Footer() : Gtk::Box(Gtk::Orientation::VERTICAL, 4)
 void Footer::update(const Player &player)
 {
     std::string status_icon = player.current_song == -1 ? "⏹" : player.paused ? "⏸" : "⯈";
-    std::string status_text = player.current_song == -1 ? "nothing playing" : player.queue.queue[player.current_song].title;
+    std::string status_text = player.current_song == -1 ? "nothing playing" : player.queue[player.current_song].title;
     status_label_.set_text(status_icon + " " + status_text);
 
     std::string position_time = player.current_song != -1 ? formatTime(player.position) : "--:--";
-    std::string duration_time = player.current_song != -1 ? formatTime(player.queue.queue[player.current_song].duration) : "--:--";
+    std::string duration_time = player.current_song != -1 ? formatTime(player.queue[player.current_song].duration) : "--:--";
     time_label_.set_text(position_time + "/" + duration_time);
 
     volume_label_.set_text("Vol:" + std::to_string(player.volume) + "%");

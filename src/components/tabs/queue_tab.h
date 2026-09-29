@@ -4,22 +4,16 @@
 
 #include <vector>
 #include <gtkmm.h>
-#include "../../library/entries.h"
-#include "../utils/utils.h"
+#include "../utils.h"
+#include "../../player/player.h"
 
-class Player;
-
-class Queue
+class QueueTab
 {
   public:
-    Queue();
+    QueueTab();
     void update();
     void setPlayer(Player *player_ptr) { player_ = player_ptr; }
-
-    void highlight(int index);
-
-    std::vector<SongEntry>       queue;
-    std::vector<SongEntry>       unshuffled_queue;
+    
     TreeColumnSet                collumns;
     Gtk::Box                     box;
     Gtk::ScrolledWindow          window;
@@ -27,6 +21,6 @@ class Queue
     Glib::RefPtr<Gtk::ListStore> tree_refrence;
 
   private:
-    Player *player_;
     void    onClicked(int n_press, double x, double y);
+    Player *player_;
 };

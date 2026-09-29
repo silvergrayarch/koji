@@ -5,8 +5,12 @@
 #include <string>
 #include <vector>
 #include <gtkmm.h>
-#include "components/footer/footer.h"
-#include "components/player/player.h"
+
+#include "player/player.h"
+#include "components/footer.h"
+#include "components/tabs/queue_tab.h"
+#include "components/tabs/albums_tab.h"
+#include "components/tabs/playlists_tab.h"
 
 class Window : public Gtk::Window
 {
@@ -17,9 +21,15 @@ class Window : public Gtk::Window
     bool update();
 
     Player        player;
-    Footer        footer;
-    Gtk::Notebook tabbar;
+
     Gtk::Box      main_window{Gtk::Orientation::VERTICAL};
+
+    Gtk::Notebook tabbar;
+    QueueTab queue_tab;
+    AlbumsTab albums_tab;
+    PlaylistsTab playlists_tab;
+    
+    Footer        footer;
 
   private:
     bool onWindowKeyPressed(guint keyval, guint keycode, Gdk::ModifierType state);
@@ -28,6 +38,9 @@ class Window : public Gtk::Window
 bool Window::update()
 {
     player.update();
+    queue_tab.update();
+    albums_tab.update();
+    playlists_tab.update();
     footer.update(player);
     return true;
 }
@@ -45,9 +58,13 @@ Window::Window()
     if (!player.init())
         return;
 
-    tabbar.append_page(player.queue.box, "Queue");
-    tabbar.append_page(player.albums.box, "Albums");
-    tabbar.append_page(player.playlists.box, "Playlists");
+    queue_tab.setPlayer(&player);
+    albums_tab.setPlayer(&player);
+    playlists_tab.setPlayer(&player);
+
+    tabbar.append_page(queue_tab.box, "Queue");
+    tabbar.append_page(albums_tab.box, "Albums");
+    tabbar.append_page(playlists_tab.box, "Playlists");
 
     auto controller = Gtk::EventControllerKey::create();
     controller->signal_key_pressed().connect(sigc::mem_fun(*this, &Window::onWindowKeyPressed), false);
@@ -111,11 +128,11 @@ bool Window::onWindowKeyPressed(guint keyval, guint, Gdk::ModifierType state)
     return false;
 }
 
-Window::~Window() { player.cleanup(); }
+Window::~Window() {}
 
 int main(int argc, char *argv[])
 {
-    auto app                                                                   = Gtk::Application::create("cc.silverfiles.koji");
-    Gtk::Settings::get_default()->property_gtk_application_prefer_dark_theme() = true;
+    auto app = Gtk::Application::create("cc.silverfiles.test");
+    Gtk::Settings::get_default()->property_gtk_application_prefer_dark_theme() = true;  
     return app->make_window_and_run<Window>(argc, argv);
 }

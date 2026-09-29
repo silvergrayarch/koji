@@ -9,17 +9,8 @@
 #include <iterator>
 #include <string>
 #include <vector>
-#include "../../library/entries.h"
-#include "../utils/utils.h"
 
 using namespace std;
-
-Player::Player()
-{
-    queue.setPlayer(this);
-    albums.setPlayer(this);
-    playlists.setPlayer(this);
-}
 
 bool Player::init()
 {
@@ -29,14 +20,14 @@ bool Player::init()
 
     if (!mpv_context)
     {
-        std::cout << "Error creating mpv context" << std::endl;
+        cout << "Error creating mpv context" << endl;
         cleanup();
         return false;
     }
 
     if (mpv_initialize(mpv_context) != 0)
     {
-        std::cout << "Error initializing mpv context" << std::endl;
+        cout << "Error initializing mpv context" << endl;
         cleanup();
         return false;
     }
@@ -44,9 +35,6 @@ bool Player::init()
     mpv_set_option_string(mpv_context, "vo", "null");
     mpv_set_option_string(mpv_context, "audio-format", "s16le");
     updateVolume();
-
-    // queue.queue = getAlbumSongs(albums.albums[0]);
-    // queue.update();
 
     return true;
 }
@@ -70,12 +58,6 @@ void Player::update()
     if (end_file->reason != MPV_END_FILE_REASON_EOF)
         return;
 
-    if (current_song < 0 || current_song >= static_cast<int>(queue.queue.size()))
-    {
-        stopPlayback();
-        return;
-    }
-
     if (repeat_mode == RepeatMode::Track)
     {
         updateCurrentSong();
@@ -83,14 +65,12 @@ void Player::update()
     }
 
     int next_song = current_song + 1;
+  
 
-    if (next_song >= static_cast<int>(queue.queue.size()) && repeat_mode == RepeatMode::All)
+    if (next_song >= queue.size() && repeat_mode == RepeatMode::All)
         current_song = 0;
-    else if (next_song >= static_cast<int>(queue.queue.size()))
-    {
+    else if (next_song >= queue.size())
         stopPlayback();
-        return;
-    }
     else
         current_song = next_song;
 
@@ -112,51 +92,42 @@ void Player::togglePause()
 void Player::toggleRepeat()
 {
     if (repeat_mode == RepeatMode::Off)
-    {
         repeat_mode = RepeatMode::All;
-    }
     else if (repeat_mode == RepeatMode::All)
-    {
         repeat_mode = RepeatMode::Track;
-    }
     else if (repeat_mode == RepeatMode::Track)
-    {
         repeat_mode = RepeatMode::Off;
-    }
 }
 
 void Player::toggleShuffle()
 {
     shuffle = !shuffle;
 
-    bool      has_current_song = current_song >= 0 && current_song < static_cast<int>(queue.queue.size());
+    bool      has_current_song = current_song >= 0 && current_song < queue.size();
     SongEntry currently_playing;
 
     if (has_current_song)
-        currently_playing = queue.queue[current_song];
+        currently_playing = queue[current_song];
 
     if (shuffle)
     {
-        queue.unshuffled_queue = queue.queue;
+        unshuffled_queue = queue;
         random_engine.seed(random_device{}());
-        ranges::shuffle(queue.queue, random_engine);
+        ranges::shuffle(queue, random_engine);
     }
     else
     {
-        queue.queue = queue.unshuffled_queue;
-        queue.unshuffled_queue.clear();
+        queue = unshuffled_queue;
+        unshuffled_queue.clear();
     }
 
     if (has_current_song)
     {
-        auto iterator = std::find(queue.queue.begin(), queue.queue.end(), currently_playing);
+        auto iterator = find(queue.begin(), queue.end(), currently_playing);
 
-        if (iterator != queue.queue.end())
-            current_song = static_cast<int>(std::distance(queue.queue.begin(), iterator));
+        if (iterator != queue.end())
+            current_song = distance(queue.begin(), iterator);
     }
-
-    queue.update();
-    queue.highlight(current_song);
 }
 
 void Player::updateVolume() { mpv_set_property_string(mpv_context, "volume", to_string(volume).c_str()); }
@@ -171,34 +142,31 @@ void Player::stopPlayback()
 
 void Player::clearQueue()
 {
-    queue.queue.clear();
-    queue.unshuffled_queue.clear();
+    queue.clear();
+    unshuffled_queue.clear();
 }
 
 void Player::updateCurrentSong()
 {
-    if (current_song < 0 || current_song >= static_cast<int>(queue.queue.size()))
+    if (current_song < 0 || current_song >= queue.size())
         return;
 
-    const char *play_command[] = {"loadfile", queue.queue[current_song].path.c_str(), "replace", nullptr};
+    const char *play_command[] = {"loadfile", queue[current_song].path.c_str(), "replace", nullptr};
     mpv_command(mpv_context, play_command);
     mpv_set_property_string(mpv_context, "pause", "no");
-    queue.update();
-    queue.highlight(current_song);
 }
 
-void Player::addSongsToQueue(std::vector<SongEntry> &songs)
+void Player::addSongsToQueue(vector<SongEntry> &songs)
 {
-
     if (shuffle)
     {
-        queue.unshuffled_queue.insert(queue.unshuffled_queue.end(), songs.begin(), songs.end());
+        unshuffled_queue.insert(unshuffled_queue.end(), songs.begin(), songs.end());
         ranges::shuffle(songs, random_engine);
     }
-    bool empty_queue = queue.queue.empty();
+    
+    bool empty_queue = queue.empty();
 
-    queue.queue.insert(queue.queue.end(), songs.begin(), songs.end());
-    queue.update();
+    queue.insert(queue.end(), songs.begin(), songs.end());
 
     if (empty_queue)
     {
