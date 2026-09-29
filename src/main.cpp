@@ -39,8 +39,6 @@ bool Window::update()
 {
     player.update();
     queue_tab.update();
-    albums_tab.update();
-    playlists_tab.update();
     footer.update(player);
     return true;
 }
@@ -61,6 +59,9 @@ Window::Window()
     queue_tab.setPlayer(&player);
     albums_tab.setPlayer(&player);
     playlists_tab.setPlayer(&player);
+
+    albums_tab.update();
+    playlists_tab.update();
 
     tabbar.append_page(queue_tab.box, "Queue");
     tabbar.append_page(albums_tab.box, "Albums");

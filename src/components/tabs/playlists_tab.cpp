@@ -45,10 +45,9 @@ void PlaylistsTab::onClicked(int n_press, double x, double y)
 
     int selected_index = path[0];
 
-    if (selected_index < 0 || selected_index >= player_->queue.size())
+    if (selected_index < 0 || selected_index >= player_->playlists.size())
         return;
 
-    PlaylistEntry &selected_playlist =  player_->playlists[selected_index];
     player_->clearQueue();
-    player_->addSongsToQueue(selected_playlist.songs);
+    player_->addSongsToQueue(player_->playlists[selected_index].songs);
 }

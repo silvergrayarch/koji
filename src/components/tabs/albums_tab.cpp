@@ -45,10 +45,9 @@ void AlbumsTab::onClicked(int n_press, double x, double y)
 
     int selected_index = path[0];
 
-    if (selected_index < 0 || selected_index >= player_->queue.size())
+    if (selected_index < 0 || selected_index >= player_->albums.size())
         return;
 
-    AlbumEntry            &selected_album = player_->albums[selected_index];
     player_->clearQueue();
-    player_->addSongsToQueue(selected_album.songs);
+    player_->addSongsToQueue(player_->albums[selected_index].songs);
 }
