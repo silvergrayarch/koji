@@ -18,7 +18,7 @@ class Playlists
     void update();
     void setPlayer(Player *player_ptr) { player_ = player_ptr; }
 
-    std::vector<PlaylistEntry>   playlists = koji::library::getPlaylists();
+    std::vector<PlaylistEntry>   playlists = getPlaylists();
     TreeColumnSet                collumns;
     Gtk::Box                     box;
     Gtk::ScrolledWindow          window;

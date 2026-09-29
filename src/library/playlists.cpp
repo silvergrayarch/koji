@@ -9,8 +9,6 @@
 
 using namespace std;
 
-namespace koji::library
-{
 vector<PlaylistEntry> getPlaylists()
 {
     vector<PlaylistEntry> playlists;
@@ -165,5 +163,3 @@ bool duplicatePlaylist(const PlaylistEntry &entry)
 
     return true;
 }
-
-} // namespace koji::library

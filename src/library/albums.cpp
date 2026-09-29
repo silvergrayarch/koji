@@ -9,9 +9,6 @@
 
 using namespace std;
 
-namespace koji::library
-{
-
 struct TrackEntry
 {
     int       track_number;
@@ -100,4 +97,3 @@ vector<SongEntry> getAlbumSongs(const AlbumEntry &album)
 
     return songs;
 }
-} // namespace koji::library

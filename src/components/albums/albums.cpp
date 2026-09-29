@@ -52,7 +52,7 @@ void Albums::onClicked(int n_press, double x, double y)
         return;
 
     AlbumEntry            &selected_album = albums[selected_index];
-    std::vector<SongEntry> album_songs    = koji::library::getAlbumSongs(selected_album);
+    std::vector<SongEntry> album_songs    = getAlbumSongs(selected_album);
     player_->clearQueue();
     player_->addSongsToQueue(album_songs);
 }

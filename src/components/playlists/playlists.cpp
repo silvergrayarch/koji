@@ -52,7 +52,7 @@ void Playlists::onClicked(int n_press, double x, double y)
 
     PlaylistEntry &selected_playlist = playlists[selected_index];
 
-    std::vector<SongEntry> playlist_songs = koji::library::getPlaylistSongs(selected_playlist);
+    std::vector<SongEntry> playlist_songs = getPlaylistSongs(selected_playlist);
     player_->clearQueue();
     player_->addSongsToQueue(playlist_songs);
 }
