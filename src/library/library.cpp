@@ -58,8 +58,8 @@ vector<SongEntry> get_album_songs(const AlbumEntry &album)
 
     SongEntry entry = {song.path(), artist, album.title, title, duration};
 
-    if (track != 0 && track <= songs.size())
-      songs.insert(songs.begin() + track, entry);
+    if (track > 0 && track <= songs.size())
+      songs.insert(songs.begin() + track - 1, entry);
     else
       songs.push_back(entry);
   }
