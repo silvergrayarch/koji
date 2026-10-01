@@ -68,7 +68,7 @@ void PlaylistsTab::getSelectedPlaylist(double x, double y)
 
   selected_playlist_ = path[0];
 
-  if (selected_playlist_ < 0 || selected_playlist_ >= player_->albums.size())
+  if (selected_playlist_ < 0 || selected_playlist_ >= player_->playlists.size())
     selected_playlist_ = -1;
 
   return;

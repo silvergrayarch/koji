@@ -24,16 +24,30 @@ QueueTab::QueueTab()
 
 void QueueTab::update()
 {
-  if (!(tree_refrence->children().size() == 0))
-    tree_refrence->clear();
+
+  auto children = tree_refrence->children();
+  auto iterator = children.begin();
+
   for (SongEntry &song : player_->queue)
   {
-    auto row = *(tree_refrence->append());
+    Gtk::TreeModel::Row row;
+
+    if (iterator != children.end())
+    {
+      row = *iterator;
+      iterator++;
+    }
+    else
+      row = *(tree_refrence->append());
+
     row[collumns.string_columns[0]] = song.title;
     row[collumns.string_columns[1]] = song.album;
     row[collumns.string_columns[2]] = song.artist;
     row[collumns.string_columns[3]] = formatTime(song.duration);
   }
+
+  while (iterator != children.end())
+    iterator = tree_refrence->erase(iterator);
 
   if (player_->current_song < 0 || player_->current_song >= static_cast<int>(tree_refrence->children().size()))
     return;
@@ -42,7 +56,6 @@ void QueueTab::update()
   path.push_back(player_->current_song);
 
   tree.get_selection()->select(path);
-  tree.scroll_to_row(path);
 }
 void QueueTab::onClicked(int n_press, double x, double y)
 {
