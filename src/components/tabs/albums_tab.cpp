@@ -28,17 +28,15 @@ AlbumsTab::AlbumsTab()
     mouse_click->signal_pressed().connect(sigc::mem_fun(*this, &AlbumsTab::onRightClick));
     tree.add_controller(mouse_click);
 
-    Gtk::Button append_button;
-    append_button.set_label("button here");
-    append_button.set_hexpand();
-    append_button.signal_clicked().connect(sigc::mem_fun(*this, &AlbumsTab::appendButtonClick));
+    auto menu = Gio::Menu::create();
+    menu->append("Append to queue", "albums.append");
 
-    Gtk::Box button_box;
-    button_box.set_name("button_box");
-    button_box.append(append_button);
+    auto actions = Gio::SimpleActionGroup::create();
+    actions->add_action("append", sigc::mem_fun(*this, &AlbumsTab::appendButtonClick));
+    box.insert_action_group("albums", actions);
 
+    popup.set_menu_model(menu);
     popup.set_parent(box);
-    popup.set_child(button_box);
     popup.set_has_arrow(false);
 }
 

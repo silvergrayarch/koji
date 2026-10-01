@@ -23,7 +23,6 @@ public:
   Gtk::ScrolledWindow window;
   Glib::RefPtr<Gtk::ListStore> tree_refrence;
   
-
 private:
 
   int getSelectedSong(double x, double y);
