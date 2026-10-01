@@ -129,7 +129,12 @@ bool Window::onWindowKeyPressed(guint keyval, guint, Gdk::ModifierType state)
   return false;
 }
 
-Window::~Window() { player.cleanup(); albums_tab.cleanup(); }
+Window::~Window()
+{
+  player.cleanup();
+  albums_tab.cleanup();
+  playlists_tab.cleanup();
+}
 
 int main(int argc, char *argv[])
 {

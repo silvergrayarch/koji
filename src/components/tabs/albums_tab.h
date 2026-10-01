@@ -15,22 +15,21 @@ public:
   void cleanup();
   void setPlayer(Player *player_ptr) { player_ = player_ptr; }
 
-  
   Gtk::Box box;
   Gtk::TreeView tree;
   TreeColumnSet collumns;
   Gtk::PopoverMenu popup;
   Gtk::ScrolledWindow window;
   Glib::RefPtr<Gtk::ListStore> tree_refrence;
-  
-private:
 
-  int getSelectedSong(double x, double y);
-  
+private:
+  void getSelectedAlbum(double x, double y);
+
   void onLeftClick(int n_press, double x, double y);
   void onRightClick(int n_press, double x, double y);
 
   void appendButtonClick();
-  
+
+  int selected_album_;
   Player *player_;
 };
