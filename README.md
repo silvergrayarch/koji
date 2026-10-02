@@ -1,7 +1,7 @@
 # Koji Music Player
 
 Koji is a music player built with C++ and the gtkmm-4.0 library. 
-It uses mpv for audio playback and SDL3 for window management. 
+It uses mpv for audio playback and gtkmm for window management. 
 
 ## Overview
 
