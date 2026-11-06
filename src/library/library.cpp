@@ -16,13 +16,9 @@ path xdg_config_home()
 {
   path config_path;
 
-  const char *xdg_config = getenv("XDG_CONFIG_HOME");
-  if (xdg_config)
-    config_path = path(xdg_config);
-
   const char *home = getenv("HOME");
   if (home)
-    config_path = path(home) / ".config";
+    config_path = path(home) / "music";
 
   return config_path;
 }
@@ -77,7 +73,7 @@ vector<AlbumEntry> get_albums()
     return albums;
   }
 
-  path album_directory = config_home / "koji" / "albums";
+  path album_directory = config_home / "albums";
 
   for (const directory_entry &artist : directory_iterator(album_directory))
   {
@@ -163,7 +159,7 @@ vector<PlaylistEntry> get_playlists()
     cout << "xdg config directory locate failed" << endl;
     return playlists;
   }
-  path playlists_directory = config_home / "koji" / "playlists";
+  path playlists_directory = config_home / "playlists";
 
   for (const directory_entry &folder : directory_iterator(playlists_directory))
   {
