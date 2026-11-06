@@ -96,7 +96,7 @@ bool Window::onWindowKeyPressed(guint keyval, guint, Gdk::ModifierType state)
     player.stopPlayback();
     return true;
   }
-  else if (keyval == GDK_KEY_space) // - `Space Bar`: Toggle pause
+  else if (keyval == GDK_KEY_c) // - `C`: Toggle pause
   {
     player.togglePause();
     return true;
